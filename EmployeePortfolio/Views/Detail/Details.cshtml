@@ -1,0 +1,66 @@
+﻿@model EmployeePortfolio.Models.empInfo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>empInfo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.empname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.empname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.projname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.projname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.skills)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.skills)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.alloc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.alloc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.exper)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.exper)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rmap)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rmap)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.empno }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
