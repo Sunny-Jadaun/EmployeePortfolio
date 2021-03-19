@@ -8,10 +8,12 @@ using System.Web.UI.WebControls;
 
 namespace EmployeePortfolio.Models
 {
-    [Table("empportfolio,empdata", Schema ="public")]
+    [Table("empportfolio", Schema ="public")]
+    
     public class empInfo
     {
-        [ForeignKey("empdata")]
+        [Key]
+
         [Required]
         [Display(Name ="Employee No:")]
         public int empno { get; set; }

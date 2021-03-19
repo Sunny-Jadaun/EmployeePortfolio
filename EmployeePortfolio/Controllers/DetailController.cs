@@ -1,4 +1,6 @@
 ﻿using System;
+using Npgsql;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -8,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using EmployeePortfolio.DataContext;
 using EmployeePortfolio.Models;
+using System.Configuration;
 
 namespace EmployeePortfolio.Controllers
 {
@@ -16,8 +19,11 @@ namespace EmployeePortfolio.Controllers
         private empDBContext db = new empDBContext();
 
         // GET: Detail
+        string empdatabase = ConfigurationManager.ConnectionStrings["empdatabase"].ToString();
+        //"Server= localhost;Port=5432;Database=dataemp;User Id=postgres;Password=ravindra@089;";
         public ActionResult Index()
         {
+
             return View(db.empObject.ToList());
         }
 
@@ -39,6 +45,19 @@ namespace EmployeePortfolio.Controllers
         // GET: Detail/Create
         public ActionResult Create()
         {
+
+            NpgsqlConnection conn = new NpgsqlConnection(empdatabase);
+            conn.Open();
+            NpgsqlCommand command = new NpgsqlCommand("select empid from empdata", conn);
+            NpgsqlDataReader dr = command.ExecuteReader();
+            var getEmpNum = new List<int>();
+            while (dr.Read())
+            {
+                getEmpNum.Add((int)dr[0]);
+            }
+            SelectList list = new SelectList(getEmpNum);
+            ViewBag.empIdList = list;
+            conn.Close();
             return View();
         }
 
@@ -49,7 +68,7 @@ namespace EmployeePortfolio.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "empno,empname,projname,skills,alloc,exper,rmap")] empInfo empInfo)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 db.empObject.Add(empInfo);
                 db.SaveChanges();

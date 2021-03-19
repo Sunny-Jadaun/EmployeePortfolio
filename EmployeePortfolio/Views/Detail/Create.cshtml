@@ -7,14 +7,23 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>empInfo</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.empno, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.empno, ViewBag.empIdList as SelectList, "select employee id")
+            @Html.ValidationMessageFor(model => model.empno, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.empname, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
