@@ -13,6 +13,6 @@ namespace EmployeePortfolio.DataContext
         {
 
         }
-        public virtual DbSet<empInfo> empObject { get; set; }
+        public virtual DbSet<empInfo> employee { get; set; }
     }
 }

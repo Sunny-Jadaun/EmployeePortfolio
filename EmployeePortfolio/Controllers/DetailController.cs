@@ -24,7 +24,7 @@ namespace EmployeePortfolio.Controllers
         public ActionResult Index()
         {
 
-            return View(db.empObject.ToList());
+            return View(db.employee.ToList());
         }
 
         // GET: Detail/Details/5
@@ -34,7 +34,7 @@ namespace EmployeePortfolio.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            empInfo empInfo = db.empObject.Find(id);
+            empInfo empInfo = db.employee.Find(id);
             if (empInfo == null)
             {
                 return HttpNotFound();
@@ -66,11 +66,14 @@ namespace EmployeePortfolio.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "empno,empname,projname,skills,alloc,exper,rmap")] empInfo empInfo)
+        public ActionResult Create([Bind(Include = "empno,empname,projname,skills,alloc,exper,rmap")]  empInfo empInfo)
         {
-            if (!ModelState.IsValid)
-            {
-                db.empObject.Add(empInfo);
+            if (ModelState.IsValid)
+            {       
+                db.employee.Add(empInfo);
+
+               // ViewBag.Message = String.Format("Empid:{0},empname: {1},projname: {2},alloc: {3}", empInfo.empno, empInfo.projname, empInfo.alloc);
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -85,7 +88,7 @@ namespace EmployeePortfolio.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            empInfo empInfo = db.empObject.Find(id);
+            empInfo empInfo = db.employee.Find(id);
             if (empInfo == null)
             {
                 return HttpNotFound();
@@ -103,6 +106,9 @@ namespace EmployeePortfolio.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(empInfo).State = EntityState.Modified;
+
+               
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -116,7 +122,7 @@ namespace EmployeePortfolio.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            empInfo empInfo = db.empObject.Find(id);
+            empInfo empInfo = db.employee.Find(id);
             if (empInfo == null)
             {
                 return HttpNotFound();
@@ -129,8 +135,8 @@ namespace EmployeePortfolio.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            empInfo empInfo = db.empObject.Find(id);
-            db.empObject.Remove(empInfo);
+            empInfo empInfo = db.employee.Find(id);
+            db.employee.Remove(empInfo);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -9,11 +9,10 @@ using System.Web.UI.WebControls;
 namespace EmployeePortfolio.Models
 {
     [Table("empportfolio", Schema ="public")]
-    
+    //[Table("empportfolio")]
     public class empInfo
     {
         [Key]
-
         [Required]
         [Display(Name ="Employee No:")]
         public int empno { get; set; }
@@ -36,7 +35,7 @@ namespace EmployeePortfolio.Models
 
         [Required]
         [Display(Name ="Experience In Secure")]
-        public DateTime exper { get; set; }
+        public int exper { get; set; }
 
         [Required]
         [Display(Name ="RoadMap for Employee:")]

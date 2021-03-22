@@ -16,7 +16,7 @@ namespace EmployeePortfolio
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Detail", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Detail", action = "Create", id = UrlParameter.Optional }
             );
         }
     }
