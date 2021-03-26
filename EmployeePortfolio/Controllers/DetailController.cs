@@ -44,7 +44,7 @@ namespace EmployeePortfolio.Controllers
 
         // GET: Detail/Create
         public ActionResult Create()
-        {
+         {
             NpgsqlConnection conn = new NpgsqlConnection(empdatabase);
             conn.Open();
             NpgsqlCommand command = new NpgsqlCommand("select empid from empdata", conn);
@@ -78,7 +78,7 @@ namespace EmployeePortfolio.Controllers
                     //  int temp = empInfo.empno;
 
                     db.employee.Add(empInfo);
-                    
+
                     // ViewBag.Message = String.Format("Empid:{0},empname: {1},projname: {2},alloc: {3}", empInfo.empno, empInfo.projname, empInfo.alloc);
                     //  empInfo.empno = temp;
                     db.SaveChanges();
@@ -104,10 +104,28 @@ namespace EmployeePortfolio.Controllers
             return View(empInfo);
         }
 
-        // POST: Detail/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult postSelect(empInfo empInfo)
+        {
+
+            NpgsqlConnection conn = new NpgsqlConnection(empdatabase);
+            conn.Open();
+            NpgsqlCommand command = new NpgsqlCommand("select username,doj from empdata where empid='"+ empInfo.empno +"'" , conn);
+            NpgsqlDataReader dr = command.ExecuteReader();
+
+            while (dr.Read())
+            {
+                empInfo.empname = dr.GetString(0);
+                empInfo.exper = 30;
+            }
+
+            return View();
+        }
+    // POST: Detail/Edit/5
+    // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+    // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "empno,empname,projname,skills,alloc,exper,rmap")] empInfo empInfo)
         {
