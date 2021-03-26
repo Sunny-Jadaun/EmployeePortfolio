@@ -15,7 +15,7 @@
         <h4>empInfo</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.empno)
+        @Html.HiddenFor(model => model.Dropdownlist.SelectedValue)
 
         <div class="form-group">
             @Html.LabelFor(model => model.empname, htmlAttributes: new { @class = "control-label col-md-2" })

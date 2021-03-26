@@ -45,18 +45,20 @@ namespace EmployeePortfolio.Controllers
         // GET: Detail/Create
         public ActionResult Create()
         {
-
             NpgsqlConnection conn = new NpgsqlConnection(empdatabase);
             conn.Open();
             NpgsqlCommand command = new NpgsqlCommand("select empid from empdata", conn);
             NpgsqlDataReader dr = command.ExecuteReader();
-            var getEmpNum = new List<int>();
+            var list = new List<emplist>();
             while (dr.Read())
             {
-                getEmpNum.Add((int)dr[0]);
+                list.Add(new emplist
+                {
+                    emp_no = dr.GetInt32(0)
+                });
             }
-            SelectList list = new SelectList(getEmpNum);
-            ViewBag.empIdList = list;
+
+            ViewBag.Dropdownlist = new SelectList(list, "emp_no", "emp_no");
             conn.Close();
             return View();
         }
@@ -65,19 +67,25 @@ namespace EmployeePortfolio.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "empno,empname,projname,skills,alloc,exper,rmap")]  empInfo empInfo)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Create(empInfo empInfo)
         {
-            if (ModelState.IsValid)
-            {       
-                db.employee.Add(empInfo);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //empInfo.empno = (int)empInfo.Dropdownlist.SelectedValue;
+                    //  int temp = empInfo.empno;
 
-               // ViewBag.Message = String.Format("Empid:{0},empname: {1},projname: {2},alloc: {3}", empInfo.empno, empInfo.projname, empInfo.alloc);
-
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                    db.employee.Add(empInfo);
+                    
+                    // ViewBag.Message = String.Format("Empid:{0},empname: {1},projname: {2},alloc: {3}", empInfo.empno, empInfo.projname, empInfo.alloc);
+                    //  empInfo.empno = temp;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
+            catch (Exception ex) { }
             return View(empInfo);
         }
 
@@ -107,7 +115,7 @@ namespace EmployeePortfolio.Controllers
             {
                 db.Entry(empInfo).State = EntityState.Modified;
 
-               
+
 
                 db.SaveChanges();
                 return RedirectToAction("Index");
